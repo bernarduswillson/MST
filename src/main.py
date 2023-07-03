@@ -7,6 +7,7 @@ from Graph import*
 from UCS import*
 from AStar import*
 from Prim import*
+from Kruskal import*
 from Utils import*
 import os
 import sys
@@ -399,12 +400,9 @@ class Ui_MainWindow(object):
 
                 # if UCS is selected
                 if self.UCS_button.isChecked():
-                    startTime = time.perf_counter_ns()
-                    # ucs = UCS(graph, start, goal)
-                    endTime = time.perf_counter_ns()
-                    # pair = list_to_adjacent_pairs(ucs.path)
-                    # self.route_path = ucs.path
-                    # self.total_cost = ucs.cost
+                    kruskal = Kruskal(graph)
+                    pair = kruskal.result
+                    self.total_cost = kruskal.cost
 
                 # if A* is selected
                 elif self.AS_button.isChecked():

@@ -64,11 +64,6 @@ class Prim:
                     else:
                         self.update_node(adj, node)
                         all_adj_nodes.append(adj)
-                    
-            # prnt all adjacent nodes
-            # print("All adjacent nodes: ")
-            # for node in all_adj_nodes:
-            #     print(node.value, node.parent.value, node.weight)
             
             # get lowest edge weight from all adjacent nodes
             lowest = None
