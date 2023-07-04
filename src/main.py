@@ -222,7 +222,7 @@ class Ui_MainWindow(object):
         # add edge button
         self.adde_button = QtWidgets.QPushButton(self.left_frame)
         self.adde_button.setGeometry(QtCore.QRect(190, 390, 95, 31))
-        # self.adde_button.clicked.connect(self.open_file)
+        self.adde_button.clicked.connect(self.add_edge)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(11)
@@ -404,6 +404,49 @@ class Ui_MainWindow(object):
 
                 # reset input
                 self.node_input.setText("")
+                
+            except:
+                # show error message
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText("Node value is not valid.")
+                msg.setWindowTitle("Error Message")
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                msg.exec_()
+
+        # if file has not been selected
+        else :
+            # show error message
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Please input a file.")
+            msg.setWindowTitle("Error Message")
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            msg.exec_()
+
+    # add edge
+    def add_edge(self):
+        # if file has been selected
+        if self.file_path != None:
+            # check if node value is valid
+            try:
+                # create graph
+                graph = Graph()
+
+                # add edge
+                graph.add_edge_file(self.file_path, int(self.node1_val), int(self.node2_val), int(self.weight_val))
+
+                # update graph
+                self.init_plot()
+
+                # reset input
+                self.node1_input.setText("")
+                self.node2_input.setText("")
+                self.weight_input.setText("")
                 
             except:
                 # show error message

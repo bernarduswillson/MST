@@ -49,6 +49,32 @@ class Graph:
                 new_line = ' '.join(map(str, row)) + '\n'
                 file.write(new_line)
 
+    # add edge from file
+    def add_edge_file(self, filename, node1, node2, weight):
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+
+        matrix = []
+        for line in lines:
+            values = list(map(int, line.split()))
+            matrix.append(values)
+
+        # if node1 or node 2 larger than matrix size
+        if node1 > len(matrix) or node2 > len(matrix):
+            while node1 > len(matrix) or node2 > len(matrix):
+                matrix.append([0] * len(matrix))
+                for i in range(len(matrix)):
+                    matrix[i].append(0)
+
+        # set the values in the node's row and column to weight
+        matrix[node1 - 1][node2 - 1] = weight
+        matrix[node2 - 1][node1 - 1] = weight
+
+        with open(filename, 'w') as file:
+            for row in matrix:
+                new_line = ' '.join(map(str, row)) + '\n'
+                file.write(new_line)
+
     # remove edge from file
     def remove_edge_file(self, filename, node1, node2):
         with open(filename, 'r') as file:
