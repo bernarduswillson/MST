@@ -12,7 +12,6 @@ from Utils import*
 import os
 import sys
 import networkx as nx
-import time
 import gmplot
 
 
@@ -20,8 +19,9 @@ class Ui_MainWindow(object):
     # initialize ui attributes
     def __init__(self):
         self.file_path = None
-        self.start_val = None
-        self.goal_val = None
+        self.node1_val = None
+        self.node2_val = None
+        self.weight_val = None
         self.total_cost = ""
         self.route_path = None
         self.runtime = 0
@@ -79,31 +79,31 @@ class Ui_MainWindow(object):
         self.filename.setStyleSheet("color: rgb(255, 255, 255)")
         self.filename.setObjectName("filename")
 
-        # UCS radio button
-        self.UCS_button = QtWidgets.QRadioButton(self.left_frame)
-        self.UCS_button.setGeometry(QtCore.QRect(40, 360, 311, 23))
+        # kruskal radio button
+        self.kruskal_button = QtWidgets.QRadioButton(self.left_frame)
+        self.kruskal_button.setGeometry(QtCore.QRect(40, 480, 311, 23))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(14)
-        self.UCS_button.setFont(font)
-        self.UCS_button.setAutoFillBackground(False)
-        self.UCS_button.setStyleSheet("color: rgb(255, 255, 255);")
-        self.UCS_button.setChecked(True)
-        self.UCS_button.setObjectName("UCS_button")
+        self.kruskal_button.setFont(font)
+        self.kruskal_button.setAutoFillBackground(False)
+        self.kruskal_button.setStyleSheet("color: rgb(255, 255, 255);")
+        self.kruskal_button.setChecked(True)
+        self.kruskal_button.setObjectName("kruskal_button")
 
-        # A* radio button
-        self.AS_button = QtWidgets.QRadioButton(self.left_frame)
-        self.AS_button.setGeometry(QtCore.QRect(40, 400, 311, 23))
+        # prim radio button
+        self.prim_button = QtWidgets.QRadioButton(self.left_frame)
+        self.prim_button.setGeometry(QtCore.QRect(40, 520, 311, 23))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(14)
-        self.AS_button.setFont(font)
-        self.AS_button.setStyleSheet("color: rgb(255, 255, 255)")
-        self.AS_button.setObjectName("AS_button")
+        self.prim_button.setFont(font)
+        self.prim_button.setStyleSheet("color: rgb(255, 255, 255)")
+        self.prim_button.setObjectName("prim_button")
 
         # search button
         self.search_button = QtWidgets.QPushButton(self.left_frame)
-        self.search_button.setGeometry(QtCore.QRect(60, 480, 231, 51))
+        self.search_button.setGeometry(QtCore.QRect(60, 580, 231, 51))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(20)
@@ -115,49 +115,94 @@ class Ui_MainWindow(object):
         self.search_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
         self.search_button.clicked.connect(self.update_plot)
 
-        # "starting node" label
-        self.starting_node = QtWidgets.QLabel(self.left_frame)
-        self.starting_node.setGeometry(QtCore.QRect(60, 240, 291, 17))
+        # "Modify Node" label
+        self.modify_node = QtWidgets.QLabel(self.left_frame)
+        self.modify_node.setGeometry(QtCore.QRect(60, 240, 151, 30))
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.modify_node.setFont(font)
+        self.modify_node.setStyleSheet("color: rgb(255, 255, 255)")
+        self.modify_node.setObjectName("modify_node")
+
+        # "node1" label
+        self.node1 = QtWidgets.QLabel(self.left_frame)
+        self.node1.setGeometry(QtCore.QRect(60, 285, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
-        self.starting_node.setFont(font)
-        self.starting_node.setStyleSheet("color: rgb(255, 255, 255)")
-        self.starting_node.setObjectName("starting_node")
+        self.node1.setFont(font)
+        self.node1.setStyleSheet("color: rgb(255, 255, 255)")
+        self.node1.setObjectName("node1")
 
-        # "goal node" label
-        self.goal_node = QtWidgets.QLabel(self.left_frame)
-        self.goal_node.setGeometry(QtCore.QRect(60, 280, 291, 17))
+        # "node2" label
+        self.node2 = QtWidgets.QLabel(self.left_frame)
+        self.node2.setGeometry(QtCore.QRect(60, 325, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
-        self.goal_node.setFont(font)
-        self.goal_node.setStyleSheet("color: rgb(255, 255, 255)")
-        self.goal_node.setObjectName("goal_node")
+        self.node2.setFont(font)
+        self.node2.setStyleSheet("color: rgb(255, 255, 255)")
+        self.node2.setObjectName("node2")
 
-        # starting node input box
-        self.start_input = QtWidgets.QLineEdit(self.left_frame)
-        self.start_input.setGeometry(QtCore.QRect(180, 230, 31, 25))
-        self.start_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
-        self.start_input.setObjectName("start_input")
-        self.start_input.textChanged.connect(self.start_value)
+        # node1 input box
+        self.node1_input = QtWidgets.QLineEdit(self.left_frame)
+        self.node1_input.setGeometry(QtCore.QRect(120, 283, 31, 25))
+        self.node1_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
+        self.node1_input.setObjectName("node1_input")
+        self.node1_input.textChanged.connect(self.node1_value)
 
-        # goal node input box
-        self.goal_input = QtWidgets.QLineEdit(self.left_frame)
-        self.goal_input.setGeometry(QtCore.QRect(180, 270, 31, 25))
-        self.goal_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
-        self.goal_input.setObjectName("goal_input")
-        self.goal_input.textChanged.connect(self.goal_value)
+        # node2 input box
+        self.node2_input = QtWidgets.QLineEdit(self.left_frame)
+        self.node2_input.setGeometry(QtCore.QRect(120, 323, 31, 25))
+        self.node2_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
+        self.node2_input.setObjectName("node2_input")
+        self.node2_input.textChanged.connect(self.node2_value)
 
-        # "execution time" label
-        self.exe_time = QtWidgets.QLabel(self.left_frame)
-        self.exe_time.setGeometry(QtCore.QRect(60, 540, 301, 17))
+        # add button
+        self.add_button = QtWidgets.QPushButton(self.left_frame)
+        self.add_button.setGeometry(QtCore.QRect(60, 370, 91, 31))
+        # self.add_button.clicked.connect(self.open_file)
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.add_button.setFont(font)
+        self.add_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.add_button.setObjectName("add_button")
+
+        # "weight_label" label
+        self.weight_label = QtWidgets.QLabel(self.left_frame)
+        self.weight_label.setGeometry(QtCore.QRect(190, 377, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
-        self.exe_time.setFont(font)
-        self.exe_time.setStyleSheet("color: rgb(255, 255, 255)")
-        self.exe_time.setObjectName("exe_time")
+        self.weight_label.setFont(font)
+        self.weight_label.setStyleSheet("color: rgb(255, 255, 255)")
+        self.weight_label.setObjectName("weight_label")
+
+        # weight input box
+        self.weight_input = QtWidgets.QLineEdit(self.left_frame)
+        self.weight_input.setGeometry(QtCore.QRect(250, 375, 31, 25))
+        self.weight_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
+        self.weight_input.setObjectName("weight_input")
+        self.weight_input.textChanged.connect(self.weight_value)
+
+        # delete button
+        self.remove_button = QtWidgets.QPushButton(self.left_frame)
+        self.remove_button.setGeometry(QtCore.QRect(60, 410, 91, 31))
+        # self.remove_button.clicked.connect(self.open_file)
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.remove_button.setFont(font)
+        self.remove_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.remove_button.setObjectName("remove_button")
 
         # right frame
         self.right_frame = QtWidgets.QFrame(self.centralwidget)
@@ -237,19 +282,22 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Shortest Path Finder"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MST Finder"))
         self.upload_button.setText(_translate("MainWindow", "Upload"))
         self.choose_file.setText(_translate("MainWindow", "Choose File"))
         self.filename.setText(_translate("MainWindow", "Filename:"))
-        self.UCS_button.setText(_translate("MainWindow", "Uniform Cost Search"))
-        self.AS_button.setText(_translate("MainWindow", "A-Star"))
+        self.kruskal_button.setText(_translate("MainWindow", "Kruskal"))
+        self.prim_button.setText(_translate("MainWindow", "Prim"))
         self.search_button.setText(_translate("MainWindow", "Search"))
-        self.starting_node.setText(_translate("MainWindow", "Starting Node "))
-        self.goal_node.setText(_translate("MainWindow", "Goal Node "))
-        self.exe_time.setText(_translate("MainWindow", "Execution Time: "))
-        self.title.setText(_translate("MainWindow", "Shortest Path Finder"))
+        self.modify_node.setText(_translate("MainWindow", "Modify Node"))
+        self.node1.setText(_translate("MainWindow", "Node 1 "))
+        self.node2.setText(_translate("MainWindow", "Node 2 "))
+        self.add_button.setText(_translate("MainWindow", "Add"))
+        self.weight_label.setText(_translate("MainWindow", "Weight"))
+        self.remove_button.setText(_translate("MainWindow", "Remove"))
+        self.title.setText(_translate("MainWindow", "Minimum Spanning Tree Finder"))
         self.cost.setText(_translate("MainWindow", "     Total Cost :"))
-        self.route.setText(_translate("MainWindow", "     Route : "))
+        self.route.setText(_translate("MainWindow", "     Steps : "))
 
     # open file dialog
     def open_file(self):
@@ -266,31 +314,30 @@ class Ui_MainWindow(object):
     def update_filename(self, filename):
         self.filename.setText("Filename: " + filename)
 
-    # update execution time label
-    def update_run_time(self):
-        self.exe_time.setText("Execution Time: {:.2f} ms".format(self.runtime))
-
     # update cost label
     def update_cost(self):
         self.cost.setText("     Total Cost : " + str(self.total_cost))
 
     # update route label
     def update_route(self):
-        print_route = None
+        route_result = ""
         for i in range(len(self.route_path)):
-            if i == 0:
-                print_route = str(self.route_path[i])
+            if i != len(self.route_path) - 1:
+                route_result += str(self.route_path[i]) + " -> "
             else:
-                print_route = print_route + " -> " + str(self.route_path[i])
-        self.route.setText("     Route : " + print_route)
+                route_result += str(self.route_path[i])
+        self.route.setText("     Steps : " + str(route_result))
 
-    # start value from input
-    def start_value(self):
-        self.start_val = self.start_input.text()
+    # node1 value from input
+    def node1_value(self):
+        self.node1_val = self.node1_input.text()
 
-    # goal value from input
-    def goal_value(self):
-        self.goal_val = self.goal_input.text()
+    # node2 value from input
+    def node2_value(self):
+        self.node2_val = self.node2_input.text()
+
+    def weight_value(self):
+        self.weight_val = self.weight_input.text()
 
     # initialize plot
     def init_plot(self):
@@ -399,16 +446,19 @@ class Ui_MainWindow(object):
                         G.add_edge(node, neighbor, weight=graph.nodes[node][neighbor])
 
                 # if UCS is selected
-                if self.UCS_button.isChecked():
+                if self.kruskal_button.isChecked():
                     kruskal = Kruskal(graph)
                     pair = kruskal.result
                     self.total_cost = kruskal.cost
+                    self.route_path = kruskal.result
 
                 # if A* is selected
-                elif self.AS_button.isChecked():
+                elif self.prim_button.isChecked():
                     prim = Prim(graph)
                     pair = prim.result
                     self.total_cost = prim.cost
+                    self.route_path = prim.result
+
 
                 # draw the NetworkX graph on the Matplotlib figure, using kamada-kawai layout
                 pos = nx.kamada_kawai_layout(G)
@@ -424,7 +474,7 @@ class Ui_MainWindow(object):
 
                 # update labels
                 self.update_cost()
-                # self.update_route()
+                self.update_route()
             
             # if file has not been selected
             else :

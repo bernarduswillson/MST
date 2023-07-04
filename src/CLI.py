@@ -3,6 +3,7 @@ from AStar import*
 from UCS import*
 from Prim import*
 from Kruskal import*
+from Cluster import*
 from Utils import*
 import time
 import gmplot
@@ -51,3 +52,8 @@ print("MST: ", kruskal.result)
 # print("Total Cost: ", kruskal.cost)
 runtime = (endTime - startTime) / 1000
 print("Runtime: {:.2f} ms".format(runtime))
+
+# CLUSTER
+print("\nCLUSTER")
+clusters = mst_based_clustering(kruskal.result, 2)
+print("Clusters: ", clusters)
