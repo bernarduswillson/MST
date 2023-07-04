@@ -19,13 +19,18 @@ class Graph:
 
     # remove node from graph
     def removeNode(self,node):
-        if node.value in self.nodes:
-            del self.nodes[node.value]
+        if node in self.nodes:
+            del self.nodes[node]
         else:
             raise Exception("Node not in graph")
+        
+        # remove node from neighbors
+        for neighbor in self.nodes:
+            if node in self.nodes[neighbor]:
+                del self.nodes[neighbor][node]
 
     # create graph from file
-    def createGraph(self,filename):
+    def createGraph(self, filename):
         file = open(filename, 'r')
         file_temp1 = open(filename, 'r')
         file_temp2 = open(filename, 'r')
@@ -36,13 +41,13 @@ class Graph:
         for line in lines:
             if len(line.split()) != len(lines):
                 raise Exception("The matrix is not square")
-            
+        
         # read file from txt
         for line in file:
             line = line.split()
             for j in range(0, len(line)):
                 if line[j] != '0':
-                    neighborValue = j+1
+                    neighborValue = j + 1
                     weight = float(line[j])
                     node = Node(i)
                     node.addNeighbor(neighborValue, weight)
@@ -50,6 +55,10 @@ class Graph:
                         self.addNode(node)
                     else:
                         self.nodes[i][neighborValue] = weight
+            # Add nodes without edges
+            if i not in self.nodes:
+                node = Node(i)
+                self.addNode(node)
             i += 1
 
     # print graph

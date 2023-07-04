@@ -42,14 +42,19 @@ class Prim:
 
     # search for MST -> list of MST edges
     def search(self):
+        # count active nodes
+        active_nodes = 0
+        for node in self.graph_nodes:
+            if self.graph_nodes[node]:
+                active_nodes += 1
+
         # find 2 nodes that have lowest weight
         start = self.get_lowest_edge()
         
-        # add start to open nodes
+        # add start to open nodes and result
         open_nodes = []
         open_nodes.append(Node(start[0]))
         open_nodes.append(Node(start[1]))
-
         self.result.append([start[0], start[1]])
 
         # iterate through open nodes
@@ -73,7 +78,7 @@ class Prim:
             self.result.append([lowest.parent.value, lowest.value])
 
             # check if all nodes already in mst
-            if len(self.result) + 1 == len(self.graph_nodes):
+            if len(self.result) == active_nodes - 1:
                 return self.result
 
             # make lowest edge weight as new open node

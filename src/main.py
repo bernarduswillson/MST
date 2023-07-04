@@ -4,15 +4,12 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from Graph import*
-from UCS import*
-from AStar import*
 from Prim import*
 from Kruskal import*
 from Utils import*
 import os
 import sys
 import networkx as nx
-import gmplot
 
 
 class Ui_MainWindow(object):
@@ -404,19 +401,39 @@ class Ui_MainWindow(object):
     def weight_value(self):
         self.weight_val = self.weight_input.text()
 
+    def remove_node_file(self, filename, node):
+        # Read matrix file, make changes by changing the value to 0 for the node's row and column, then write to a new file
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+
+        matrix = []
+        for line in lines:
+            values = list(map(int, line.split()))
+            matrix.append(values)
+
+        for i in range(len(matrix)):
+            matrix[i][node - 1] = 0  # Set the values in the node's column to 0
+            matrix[node - 1][i] = 0  # Set the values in the node's row to 0
+
+        with open(filename, 'w') as file:
+            for row in matrix:
+                new_line = ' '.join(map(str, row)) + '\n'
+                file.write(new_line)
+
     # remove node
     def remove_node(self):
         # if file has been selected
         if self.file_path != None:
             # check if node value is valid
             try:
-                # tes = self.node1_val + self.node2_val
+                # remove node
+                self.remove_node_file(self.file_path, int(self.node_val))
 
-                # initialize graph
-                graph = Graph()
-                graph.createGraph(self.file_path)
-                graph.printGraph()
-                graph.removeNode(self.node1_val)
+                # update graph
+                self.init_plot()
+
+                # reset input
+                self.node_input.setText("")
                 
             except:
                 # show error message

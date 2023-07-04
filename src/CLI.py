@@ -1,6 +1,4 @@
 from Graph import*
-from AStar import*
-from UCS import*
 from Prim import*
 from Kruskal import*
 from Cluster import*
@@ -9,30 +7,10 @@ import time
 import gmplot
 
 G = Graph()
-G.createGraph("test/map5.txt")
+G.createGraph("test/ppt.txt")
 G.printGraph()
 start = 1
 goal = 5
-
-# UCS
-print("\nUNIFORM COST SEARCH")
-startTime = time.perf_counter_ns()
-ucs = UCS(G, start, goal)
-endTime = time.perf_counter_ns()
-print("Path: ", ucs.path)
-print("Total Cost: ", ucs.cost)
-runtime = (endTime - startTime) / 1000
-print("Runtime: {:.2f} ms".format(runtime))
-
-# ASTAR
-print("\nA STAR")
-startTime = time.perf_counter_ns()
-astar = AStar(G, start, goal)
-endTime = time.perf_counter_ns()
-print("Path: ", astar.path)
-print("Total Cost: ", astar.cost)
-runtime = (endTime - startTime) / 1000
-print("Runtime: {:.2f} ms".format(runtime))
 
 # PRIM
 print("\nPRIM")
