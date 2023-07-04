@@ -29,6 +29,45 @@ class Graph:
             if node in self.nodes[neighbor]:
                 del self.nodes[neighbor][node]
 
+    # remove node from file
+    def remove_node_file(self, filename, node):
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+
+        matrix = []
+        for line in lines:
+            values = list(map(int, line.split()))
+            matrix.append(values)
+
+          # set the all values in the node's row and column to 0
+        for i in range(len(matrix)):
+            matrix[i][node - 1] = 0
+            matrix[node - 1][i] = 0
+
+        with open(filename, 'w') as file:
+            for row in matrix:
+                new_line = ' '.join(map(str, row)) + '\n'
+                file.write(new_line)
+
+    # remove edge from file
+    def remove_edge_file(self, filename, node1, node2):
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+
+        matrix = []
+        for line in lines:
+            values = list(map(int, line.split()))
+            matrix.append(values)
+
+        # set the values in the node's row and column to 0
+        matrix[node1 - 1][node2 - 1] = 0
+        matrix[node2 - 1][node1 - 1] = 0
+
+        with open(filename, 'w') as file:
+            for row in matrix:
+                new_line = ' '.join(map(str, row)) + '\n'
+                file.write(new_line)
+
     # create graph from file
     def createGraph(self, filename):
         file = open(filename, 'r')

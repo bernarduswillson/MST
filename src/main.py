@@ -206,22 +206,9 @@ class Ui_MainWindow(object):
         self.weight_input.setObjectName("weight_input")
         self.weight_input.textChanged.connect(self.weight_value)
 
-        # add node button
-        self.addn_button = QtWidgets.QPushButton(self.left_frame)
-        self.addn_button.setGeometry(QtCore.QRect(60, 390, 95, 31))
-        # self.addn_button.clicked.connect(self.open_file)
-        font = QtGui.QFont()
-        font.setFamily("Poppins Medium")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.addn_button.setFont(font)
-        self.addn_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
-        self.addn_button.setObjectName("addn_button")
-
         # remove node button
         self.removen_button = QtWidgets.QPushButton(self.left_frame)
-        self.removen_button.setGeometry(QtCore.QRect(60, 430, 95, 31))
+        self.removen_button.setGeometry(QtCore.QRect(60, 390, 95, 31))
         self.removen_button.clicked.connect(self.remove_node)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
@@ -248,7 +235,7 @@ class Ui_MainWindow(object):
         # remove edge button
         self.removee_button = QtWidgets.QPushButton(self.left_frame)
         self.removee_button.setGeometry(QtCore.QRect(190, 430, 95, 31))
-        self.removee_button.clicked.connect(self.remove_node)
+        self.removee_button.clicked.connect(self.remove_edge)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(11)
@@ -348,7 +335,6 @@ class Ui_MainWindow(object):
         self.node.setText(_translate("MainWindow", "Node"))
         self.node1.setText(_translate("MainWindow", "Node 1 "))
         self.node2.setText(_translate("MainWindow", "Node 2 "))
-        self.addn_button.setText(_translate("MainWindow", "Add"))
         self.removen_button.setText(_translate("MainWindow", "Remove"))
         self.adde_button.setText(_translate("MainWindow", "Add"))
         self.removee_button.setText(_translate("MainWindow", "Remove"))
@@ -401,39 +387,65 @@ class Ui_MainWindow(object):
     def weight_value(self):
         self.weight_val = self.weight_input.text()
 
-    def remove_node_file(self, filename, node):
-        # Read matrix file, make changes by changing the value to 0 for the node's row and column, then write to a new file
-        with open(filename, 'r') as file:
-            lines = file.readlines()
-
-        matrix = []
-        for line in lines:
-            values = list(map(int, line.split()))
-            matrix.append(values)
-
-        for i in range(len(matrix)):
-            matrix[i][node - 1] = 0  # Set the values in the node's column to 0
-            matrix[node - 1][i] = 0  # Set the values in the node's row to 0
-
-        with open(filename, 'w') as file:
-            for row in matrix:
-                new_line = ' '.join(map(str, row)) + '\n'
-                file.write(new_line)
-
     # remove node
     def remove_node(self):
         # if file has been selected
         if self.file_path != None:
             # check if node value is valid
             try:
+                # create graph
+                graph = Graph()
+
                 # remove node
-                self.remove_node_file(self.file_path, int(self.node_val))
+                graph.remove_node_file(self.file_path, int(self.node_val))
 
                 # update graph
                 self.init_plot()
 
                 # reset input
                 self.node_input.setText("")
+                
+            except:
+                # show error message
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText("Node value is not valid.")
+                msg.setWindowTitle("Error Message")
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                msg.exec_()
+
+        # if file has not been selected
+        else :
+            # show error message
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Please input a file.")
+            msg.setWindowTitle("Error Message")
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            msg.exec_()
+
+    # remove edge
+    def remove_edge(self):
+        # if file has been selected
+        if self.file_path != None:
+            # check if node value is valid
+            try:
+                # create graph
+                graph = Graph()
+
+                # remove edge
+                graph.remove_edge_file(self.file_path, int(self.node1_val), int(self.node2_val))
+
+                # update graph
+                self.init_plot()
+
+                # reset input
+                self.node1_input.setText("")
+                self.node2_input.setText("")
                 
             except:
                 # show error message
