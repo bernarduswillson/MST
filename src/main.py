@@ -81,10 +81,11 @@ class Ui_MainWindow(object):
 
         # kruskal radio button
         self.kruskal_button = QtWidgets.QRadioButton(self.left_frame)
-        self.kruskal_button.setGeometry(QtCore.QRect(40, 480, 311, 23))
+        self.kruskal_button.setGeometry(QtCore.QRect(40, 495, 311, 23))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(14)
+        font.setBold(True)
         self.kruskal_button.setFont(font)
         self.kruskal_button.setAutoFillBackground(False)
         self.kruskal_button.setStyleSheet("color: rgb(255, 255, 255);")
@@ -93,10 +94,11 @@ class Ui_MainWindow(object):
 
         # prim radio button
         self.prim_button = QtWidgets.QRadioButton(self.left_frame)
-        self.prim_button.setGeometry(QtCore.QRect(40, 520, 311, 23))
+        self.prim_button.setGeometry(QtCore.QRect(40, 535, 311, 23))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(14)
+        font.setBold(True)
         self.prim_button.setFont(font)
         self.prim_button.setStyleSheet("color: rgb(255, 255, 255)")
         self.prim_button.setObjectName("prim_button")
@@ -117,7 +119,7 @@ class Ui_MainWindow(object):
 
         # "Modify Node" label
         self.modify_node = QtWidgets.QLabel(self.left_frame)
-        self.modify_node.setGeometry(QtCore.QRect(60, 240, 151, 30))
+        self.modify_node.setGeometry(QtCore.QRect(60, 220, 151, 30))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(14)
@@ -127,9 +129,31 @@ class Ui_MainWindow(object):
         self.modify_node.setStyleSheet("color: rgb(255, 255, 255)")
         self.modify_node.setObjectName("modify_node")
 
+        # "node" label
+        self.node = QtWidgets.QLabel(self.left_frame)
+        self.node.setGeometry(QtCore.QRect(60, 265, 291, 17))
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setItalic(False)
+        self.node.setFont(font)
+        self.node.setStyleSheet("color: rgb(255, 255, 255)")
+        self.node.setObjectName("node")
+
+        # "Modify Edge" label
+        self.modify_edge = QtWidgets.QLabel(self.left_frame)
+        self.modify_edge.setGeometry(QtCore.QRect(190, 220, 151, 30))
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.modify_edge.setFont(font)
+        self.modify_edge.setStyleSheet("color: rgb(255, 255, 255)")
+        self.modify_edge.setObjectName("modify_edge")
+
         # "node1" label
         self.node1 = QtWidgets.QLabel(self.left_frame)
-        self.node1.setGeometry(QtCore.QRect(60, 285, 291, 17))
+        self.node1.setGeometry(QtCore.QRect(190, 265, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
@@ -139,7 +163,7 @@ class Ui_MainWindow(object):
 
         # "node2" label
         self.node2 = QtWidgets.QLabel(self.left_frame)
-        self.node2.setGeometry(QtCore.QRect(60, 325, 291, 17))
+        self.node2.setGeometry(QtCore.QRect(190, 305, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
@@ -147,36 +171,30 @@ class Ui_MainWindow(object):
         self.node2.setStyleSheet("color: rgb(255, 255, 255)")
         self.node2.setObjectName("node2")
 
+        # node input box
+        self.node_input = QtWidgets.QLineEdit(self.left_frame)
+        self.node_input.setGeometry(QtCore.QRect(120, 263, 31, 25))
+        self.node_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
+        self.node_input.setObjectName("node_input")
+        self.node_input.textChanged.connect(self.node_value)
+
         # node1 input box
         self.node1_input = QtWidgets.QLineEdit(self.left_frame)
-        self.node1_input.setGeometry(QtCore.QRect(120, 283, 31, 25))
+        self.node1_input.setGeometry(QtCore.QRect(250, 263, 31, 25))
         self.node1_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
         self.node1_input.setObjectName("node1_input")
         self.node1_input.textChanged.connect(self.node1_value)
 
         # node2 input box
         self.node2_input = QtWidgets.QLineEdit(self.left_frame)
-        self.node2_input.setGeometry(QtCore.QRect(120, 323, 31, 25))
+        self.node2_input.setGeometry(QtCore.QRect(250, 303, 31, 25))
         self.node2_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
         self.node2_input.setObjectName("node2_input")
         self.node2_input.textChanged.connect(self.node2_value)
 
-        # add button
-        self.add_button = QtWidgets.QPushButton(self.left_frame)
-        self.add_button.setGeometry(QtCore.QRect(60, 370, 91, 31))
-        # self.add_button.clicked.connect(self.open_file)
-        font = QtGui.QFont()
-        font.setFamily("Poppins Medium")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.add_button.setFont(font)
-        self.add_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
-        self.add_button.setObjectName("add_button")
-
         # "weight_label" label
         self.weight_label = QtWidgets.QLabel(self.left_frame)
-        self.weight_label.setGeometry(QtCore.QRect(190, 377, 291, 17))
+        self.weight_label.setGeometry(QtCore.QRect(190, 345, 291, 17))
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setItalic(False)
@@ -186,23 +204,62 @@ class Ui_MainWindow(object):
 
         # weight input box
         self.weight_input = QtWidgets.QLineEdit(self.left_frame)
-        self.weight_input.setGeometry(QtCore.QRect(250, 375, 31, 25))
+        self.weight_input.setGeometry(QtCore.QRect(250, 343, 31, 25))
         self.weight_input.setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);")
         self.weight_input.setObjectName("weight_input")
         self.weight_input.textChanged.connect(self.weight_value)
 
-        # delete button
-        self.remove_button = QtWidgets.QPushButton(self.left_frame)
-        self.remove_button.setGeometry(QtCore.QRect(60, 410, 91, 31))
-        # self.remove_button.clicked.connect(self.open_file)
+        # add node button
+        self.addn_button = QtWidgets.QPushButton(self.left_frame)
+        self.addn_button.setGeometry(QtCore.QRect(60, 390, 95, 31))
+        # self.addn_button.clicked.connect(self.open_file)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(11)
         font.setBold(False)
         font.setWeight(50)
-        self.remove_button.setFont(font)
-        self.remove_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
-        self.remove_button.setObjectName("remove_button")
+        self.addn_button.setFont(font)
+        self.addn_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.addn_button.setObjectName("addn_button")
+
+        # remove node button
+        self.removen_button = QtWidgets.QPushButton(self.left_frame)
+        self.removen_button.setGeometry(QtCore.QRect(60, 430, 95, 31))
+        self.removen_button.clicked.connect(self.remove_node)
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.removen_button.setFont(font)
+        self.removen_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.removen_button.setObjectName("removen_button")
+
+        # add edge button
+        self.adde_button = QtWidgets.QPushButton(self.left_frame)
+        self.adde_button.setGeometry(QtCore.QRect(190, 390, 95, 31))
+        # self.adde_button.clicked.connect(self.open_file)
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.adde_button.setFont(font)
+        self.adde_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.adde_button.setObjectName("adde_button")
+
+        # remove edge button
+        self.removee_button = QtWidgets.QPushButton(self.left_frame)
+        self.removee_button.setGeometry(QtCore.QRect(190, 430, 95, 31))
+        self.removee_button.clicked.connect(self.remove_node)
+        font = QtGui.QFont()
+        font.setFamily("Poppins Medium")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.removee_button.setFont(font)
+        self.removee_button.setStyleSheet("QPushButton {color: rgb(255, 255, 255); background-color: rgb(61, 56, 70); border-radius: 10px} QPushButton:hover {background-color: rgb(255, 255, 255); color: rgb(61, 56, 70)} QPushButton:pressed {background-color: rgb(41, 36, 50);}")
+        self.removee_button.setObjectName("removee_button")
 
         # right frame
         self.right_frame = QtWidgets.QFrame(self.centralwidget)
@@ -289,12 +346,16 @@ class Ui_MainWindow(object):
         self.kruskal_button.setText(_translate("MainWindow", "Kruskal"))
         self.prim_button.setText(_translate("MainWindow", "Prim"))
         self.search_button.setText(_translate("MainWindow", "Search"))
-        self.modify_node.setText(_translate("MainWindow", "Modify Node"))
+        self.modify_node.setText(_translate("MainWindow", "Node"))
+        self.modify_edge.setText(_translate("MainWindow", "Edge"))
+        self.node.setText(_translate("MainWindow", "Node"))
         self.node1.setText(_translate("MainWindow", "Node 1 "))
         self.node2.setText(_translate("MainWindow", "Node 2 "))
-        self.add_button.setText(_translate("MainWindow", "Add"))
+        self.addn_button.setText(_translate("MainWindow", "Add"))
+        self.removen_button.setText(_translate("MainWindow", "Remove"))
+        self.adde_button.setText(_translate("MainWindow", "Add"))
+        self.removee_button.setText(_translate("MainWindow", "Remove"))
         self.weight_label.setText(_translate("MainWindow", "Weight"))
-        self.remove_button.setText(_translate("MainWindow", "Remove"))
         self.title.setText(_translate("MainWindow", "Minimum Spanning Tree Finder"))
         self.cost.setText(_translate("MainWindow", "     Total Cost :"))
         self.route.setText(_translate("MainWindow", "     Steps : "))
@@ -328,6 +389,10 @@ class Ui_MainWindow(object):
                 route_result += str(self.route_path[i])
         self.route.setText("     Steps : " + str(route_result))
 
+    # node value from input
+    def node_value(self):
+        self.node_val = self.node_input.text()
+
     # node1 value from input
     def node1_value(self):
         self.node1_val = self.node1_input.text()
@@ -339,6 +404,43 @@ class Ui_MainWindow(object):
     def weight_value(self):
         self.weight_val = self.weight_input.text()
 
+    # remove node
+    def remove_node(self):
+        # if file has been selected
+        if self.file_path != None:
+            # check if node value is valid
+            try:
+                # tes = self.node1_val + self.node2_val
+
+                # initialize graph
+                graph = Graph()
+                graph.createGraph(self.file_path)
+                graph.printGraph()
+                graph.removeNode(self.node1_val)
+                
+            except:
+                # show error message
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText("Node value is not valid.")
+                msg.setWindowTitle("Error Message")
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                msg.exec_()
+
+        # if file has not been selected
+        else :
+            # show error message
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Please input a file.")
+            msg.setWindowTitle("Error Message")
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            msg.exec_()
+
     # initialize plot
     def init_plot(self):
 
@@ -347,59 +449,29 @@ class Ui_MainWindow(object):
 
         # try to open file with correct format
         try :
-            # if file input is adjacency matrix with coordinates
-            try :
-                # create graph with coordinates
-                graph.createGraphWithCoords(self.file_path)
-                gmap = gmplot.GoogleMapPlotter(graph.Maplat, graph.Maplong, graph.Mapzoom)
-                gmap.title = graph.Mapname
+            # clear the previous plot
+            self.graph.clear()
 
-                # give description for each node in the map
-                for node in graph.nodes:
-                    gmap.marker(graph.nodeID[node][1], graph.nodeID[node][2], 'red', title=f"Node {node} - {graph.nodeID[node][0]}.", info_window=f"Node {node} - {graph.nodeID[node][0]}.")
+            # create graph
+            G = nx.DiGraph()
+            graph.createGraph(self.file_path)
 
-                # plot the graph, each node is a blue dot, each edge is a blue line
-                for node in graph.nodes:
-                    for neighbor in graph.nodes[node]:
-                        gmap.scatter([graph.nodeID[node][1], graph.nodeID[neighbor][1]], [graph.nodeID[node][2], graph.nodeID[neighbor][2]], 'red', size = 5, marker = False)
-                        gmap.plot([graph.nodeID[node][1], graph.nodeID[neighbor][1]], [graph.nodeID[node][2], graph.nodeID[neighbor][2]], 'blue', edge_width=1)
+            # insert edges to G
+            for node in graph.nodes:
+                for neighbor in graph.nodes[node]:
+                    G.add_edge(node, neighbor, weight=graph.nodes[node][neighbor])
 
-                # save the map to html file
-                gmap.draw("bin/result.html")
+            # draw the NetworkX graph on the Matplotlib figure using kamada-kawai layout
+            pos = nx.kamada_kawai_layout(G)
+            nx.draw(G, pos, with_labels=True, node_size=500, node_color='black', font_size=10, font_color='white', font_weight='bold', ax=self.graph, arrows=False)
 
-                #unhide webview
-                self.web_view.show()
-                #hide canvas
-                self.canvas.hide()
+            #unhide canvas
+            self.canvas.show()
+            #hide webview
+            self.web_view.hide()
 
-                # refresh the webview
-                self.web_view.setUrl(QtCore.QUrl.fromLocalFile(os.path.abspath("bin/result.html")))
-
-            # if file input is adjacency matrix
-            except:
-                # clear the previous plot
-                self.graph.clear()
-
-                # create graph
-                G = nx.DiGraph()
-                graph.createGraph(self.file_path)
-
-                # insert edges to G
-                for node in graph.nodes:
-                    for neighbor in graph.nodes[node]:
-                        G.add_edge(node, neighbor, weight=graph.nodes[node][neighbor])
-
-                # draw the NetworkX graph on the Matplotlib figure using kamada-kawai layout
-                pos = nx.kamada_kawai_layout(G)
-                nx.draw(G, pos, with_labels=True, node_size=500, node_color='black', font_size=10, font_color='white', font_weight='bold', ax=self.graph, arrows=False)
-
-                #unhide canvas
-                self.canvas.show()
-                #hide webview
-                self.web_view.hide()
-
-                # Refresh the canvas
-                self.canvas.draw()
+            # Refresh the canvas
+            self.canvas.draw()
         
         # if file input is not correct
         except:
@@ -428,73 +500,58 @@ class Ui_MainWindow(object):
         # initialize graph
         graph = Graph()
 
-        # if start and goal value is not empty
-        try :
-            # if file input is adjacency matrix
-            # if file has been selected
-            if self.file_path != None:
-                #unhide canvas
-                self.canvas.show()
+        # if file has been selected
+        if self.file_path != None:
+            #unhide canvas
+            self.canvas.show()
 
-                # create graph
-                G = nx.DiGraph()
-                graph.createGraph(self.file_path)
+            # create graph
+            G = nx.DiGraph()
+            graph.createGraph(self.file_path)
 
-                # insert edges to G
-                for node in graph.nodes:
-                    for neighbor in graph.nodes[node]:
-                        G.add_edge(node, neighbor, weight=graph.nodes[node][neighbor])
+            # insert edges to G
+            for node in graph.nodes:
+                for neighbor in graph.nodes[node]:
+                    G.add_edge(node, neighbor, weight=graph.nodes[node][neighbor])
 
-                # if UCS is selected
-                if self.kruskal_button.isChecked():
-                    kruskal = Kruskal(graph)
-                    pair = kruskal.result
-                    self.total_cost = kruskal.cost
-                    self.route_path = kruskal.result
+            # if UCS is selected
+            if self.kruskal_button.isChecked():
+                kruskal = Kruskal(graph)
+                pair = kruskal.result
+                self.total_cost = kruskal.cost
+                self.route_path = kruskal.result
 
-                # if A* is selected
-                elif self.prim_button.isChecked():
-                    prim = Prim(graph)
-                    pair = prim.result
-                    self.total_cost = prim.cost
-                    self.route_path = prim.result
+            # if A* is selected
+            elif self.prim_button.isChecked():
+                prim = Prim(graph)
+                pair = prim.result
+                self.total_cost = prim.cost
+                self.route_path = prim.result
 
 
-                # draw the NetworkX graph on the Matplotlib figure, using kamada-kawai layout
-                pos = nx.kamada_kawai_layout(G)
-                nx.draw(G, pos, with_labels=True, node_size=500, node_color='black', font_size=10, font_color='white', font_weight='bold', ax=self.graph, arrows=False)
-                nx.draw_networkx_edges(G, pos, edgelist=pair, edge_color='red', width=3, ax=self.graph, arrows=False)
+            # draw the NetworkX graph on the Matplotlib figure, using kamada-kawai layout
+            pos = nx.kamada_kawai_layout(G)
+            nx.draw(G, pos, with_labels=True, node_size=500, node_color='black', font_size=10, font_color='white', font_weight='bold', ax=self.graph, arrows=False)
+            nx.draw_networkx_edges(G, pos, edgelist=pair, edge_color='red', width=3, ax=self.graph, arrows=False)
 
-                # Add numbers on red edges
-                edge_labels = {(u, v): i+1 for i, (u, v) in enumerate(pair)}
-                nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red', ax=self.graph)
+            # Add numbers on red edges
+            edge_labels = {(u, v): i+1 for i, (u, v) in enumerate(pair)}
+            nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red', ax=self.graph)
 
-                # update the canvas
-                self.canvas.draw()
+            # update the canvas
+            self.canvas.draw()
 
-                # update labels
-                self.update_cost()
-                self.update_route()
-            
-            # if file has not been selected
-            else :
-                # show error message
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText("Please input a file.")
-                msg.setWindowTitle("Error Message")
-                msg.setStandardButtons(QMessageBox.Ok)
-
-                msg.exec_()
-
-        # if start and goal value is not valid
-        except :
+            # update labels
+            self.update_cost()
+            self.update_route()
+        
+        # if file has not been selected
+        else :
             # show error message
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
-            msg.setInformativeText("Start and Goal value is not valid.")
+            msg.setInformativeText("Please input a file.")
             msg.setWindowTitle("Error Message")
             msg.setStandardButtons(QMessageBox.Ok)
 
