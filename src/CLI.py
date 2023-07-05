@@ -2,9 +2,7 @@ from Graph import*
 from Prim import*
 from Kruskal import*
 from Cluster import*
-from Utils import*
 import time
-import gmplot
 
 G = Graph()
 G.createGraph("test/ppt.txt")

@@ -1,5 +1,5 @@
-# Shortest Path Problem using UCS and AStar Algorithm🎲
->Tugas Kecil 3 IF2211 Strategi Algortima
+# Minimum Spanning Tree using Prim and Kruskal Algorithm🎲
+>Tugas Seleksi IRK
 ## Table of Contents
 * [Contributors](#contributors)
 * [General Information](#general-information)
@@ -11,31 +11,28 @@
 | NIM | Nama |
 | :---: | :---: |
 | 13521021 | Bernardus Willson  |
-| 13521024 | Ahmad Nadil |
 ## General Information 
-The shortest path problem is a one of the most popular problem in computation. In this problem, it is required to find the shortest path between two points in a graph or a map.
+The Minimum Spanning Tree (MST) problem is another well-known problem in graph theory and computation. In this problem, the goal is to find a spanning tree of minimum weight in a connected, undirected graph.
+
+A spanning tree is a subgraph that includes all the vertices of the original graph, with the minimum possible number of edges to form a tree (i.e., without forming cycles). The weight of a spanning tree is determined by the sum of the weights of its edges.
 ## Technology Used
 - Python
 - Matplotlib Python Library
 - NetworkX Python Library
-- GMPlot Python Library
 - PyQt Python Library (GUI)
 ## Project Structure
 ```bash
 .
-├── bin             # Bin folder (contains html map)
-|   └── result.html
-├── doc             # Documentation
-|   └── Tucil3_13521021_13521024.pdf
-├── src             # Source COde
-|   ├── AStar.py
+├── bin
+├── doc
+├── src             # Source Code
 |   ├── CLI.py
 |   ├── Graph.py
+|   ├── Kruskal.py
 |   ├── main.py
 |   ├── Node.py
-|   ├── requirements.txt
-|   ├── UCS.py
-|   └── utils.py
+|   ├── Prim.py
+|   └── requirements.txt
 └── test            # Test Folder
     ├── map1.txt
     ├── map2.txt
@@ -47,7 +44,7 @@ The shortest path problem is a one of the most popular problem in computation. I
 1. Clone this repo using the command below: 
 
 ```
-git clone https://github.com/IceTeaXXD/Tucil3_13521021_13521024.git
+git clone https://github.com/bernarduswillson/MST.git
 ```
 <br>
 2. Install the required library using this command :
@@ -77,81 +74,37 @@ Alternatively, you can use the `run.bat` if you're using Windows. You can open t
 ![](doc/file.png)
 
 <br>
-5. Input the starting and goal node value, you can see the value from the graph shown or by clicking the marker for the Google Maps visualization.
+5. Choose an algorithm and click search to get the result
 
-![](doc/node.png)
+![](doc/graph.png)
 
 <br>
-6. Choose an algorithm and click search to get the result
+6. If you want to remove a node, input the node number on "Node" field, and then click "Remove" button on the left side
 
-![](doc/resultmap.png)
+![](doc/removen.png)
 
-Another visual if the file input is an adjacency matrix
-![](doc/graf.png)
+<br>
+7. If you want to add an edge, input the node numbers on "Node 1" and "Node 2" field, input the weight on "Weight" field, and then click "Add" button on the right side
+
+![](doc/adde.png)
+
+<br>
+8. If you want to add a new node, you can use the same method as adding an edge by inputting the node new node number on "Node 1" or "Node 2" field
+
+![](doc/addn.png)
+
+<br>
+9. If you want to remove an edge, input the node numbers on "Node 1" and "Node 2" field, and then click "Remove" button on the right side
+
+![](doc/removee.png)
 
 ## File Input Structure
-1. For simple visualization, you can input a simple weighted adjaceny matrix, below is the example : 
+For a simple visualization, you can input a weighted adjacency matrix representing an undirected, fully connected graph. Each node should be connected to every other node in the graph.
 ```
-0 75 0 140 0 0 0 0 0 0 0 0 118
-75 0 71 0 0 0 0 0 0 0 0 0 0
-0 71 0 151 0 0 0 0 0 0 0 0 0
-140 0 151 0 99 0 0 0 80 0 0 0 0
-0 0 0 99 0 211 0 0 0 0 0 0 0
-0 0 0 0 211 0 101 0 0 0 0 0 0
-0 0 0 0 0 101 0 138 97 0 0 0 0
-0 0 0 0 0 0 138 0 146 0 0 0 0
-0 0 0 80 0 0 97 146 0 120 0 0 0
-0 0 0 0 0 0 0 0 120 0 75 0 0
-0 0 0 0 0 0 0 0 0 75 0 70 0
-0 0 0 0 0 0 0 0 0 0 70 0 111
-118 0 0 0 0 0 0 0 0 0 0 111 0
-```
-
-2. For Google Maps visualization, you can use this txt format below (please note that the comments (#) is not included in the txt)
-```
-BSD                     # Map Name
-10                      # Number of nodes (n)
--6.30515                # Google Maps Latitude
-106.66988               # Google Maps Longitude
-14                      # Google Maps zoom
-0 0 0 0 0 0 0 0 1 1     # n x n adjacency matrix
-0 0 0 0 1 1 0 0 0 0
-0 0 0 1 0 0 0 0 0 0
-0 0 1 0 1 0 0 0 1 0
-0 1 0 1 0 0 0 0 1 0
-0 1 0 0 0 0 1 1 0 0
-0 0 0 0 0 1 0 0 1 1
-0 0 0 0 0 1 0 0 0 1
-1 0 0 1 1 0 1 0 0 0
-1 0 0 0 0 0 1 1 0 0
-Rumah Nadil             # Name of node
--6.32396                # Latitude of node
-106.67665               # Longitude of node
-Albesd
--6.28817
-106.67375
-AEON Mall
--6.30523
-106.64353
-The Breeze
--6.30122
-106.6534
-Eka Hospital
--6.29887
-106.66978
-Pasar Modern BSD
--6.30449
-106.6849
-Taman Jajan
--6.30634
-106.67998
-Swiss - Belhotel
--6.30904
-106.68959
-The Green
--6.31297
-106.6692
-Sevilla Park
--6.31471
-106.68725
+0 10 0 30 45 0
+10 0 50 0 40 25
+0 50 0 0 35 15
+30 0 0 0 0 20
+45 40 35 0 0 55
+0 25 15 20 55 0
 ```

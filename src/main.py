@@ -6,7 +6,6 @@ from matplotlib.figure import Figure
 from Graph import*
 from Prim import*
 from Kruskal import*
-from Utils import*
 import os
 import sys
 import networkx as nx
@@ -358,6 +357,12 @@ class Ui_MainWindow(object):
     def update_filename(self, filename):
         self.filename.setText("Filename: " + filename)
 
+        # reset all values
+        self.total_cost = ""
+        self.route_path = ""
+        self.update_cost()
+        self.update_route()
+
     # update cost label
     def update_cost(self):
         self.cost.setText("     Total Cost : " + str(self.total_cost))
@@ -402,8 +407,12 @@ class Ui_MainWindow(object):
                 # update graph
                 self.init_plot()
 
-                # reset input
+                # reset all values
                 self.node_input.setText("")
+                self.total_cost = ""
+                self.route_path = ""
+                self.update_cost()
+                self.update_route()
                 
             except:
                 # show error message
@@ -443,10 +452,14 @@ class Ui_MainWindow(object):
                 # update graph
                 self.init_plot()
 
-                # reset input
+                # reset all values
                 self.node1_input.setText("")
                 self.node2_input.setText("")
                 self.weight_input.setText("")
+                self.total_cost = ""
+                self.route_path = ""
+                self.update_cost()
+                self.update_route()
                 
             except:
                 # show error message
@@ -486,9 +499,13 @@ class Ui_MainWindow(object):
                 # update graph
                 self.init_plot()
 
-                # reset input
+                # reset all values
                 self.node1_input.setText("")
                 self.node2_input.setText("")
+                self.total_cost = ""
+                self.route_path = ""
+                self.update_cost()
+                self.update_route()
                 
             except:
                 # show error message
