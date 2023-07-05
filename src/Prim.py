@@ -34,7 +34,7 @@ class Prim:
                     lowest = (node, neighbor, weight)
         return lowest[0], lowest[1]
 
-    # update node attributes (parent)
+    # update node attributes (parent, weight)
     def update_node(self, adj, node):
         adj.parent = node
         adj.weight = self.graph_nodes[node.value][adj.value]
@@ -63,6 +63,7 @@ class Prim:
             for node in open_nodes:
                 adj_nodes = self.get_adjacent_nodes(node)
                 for adj in adj_nodes:
+                    # check if adjacent node is already in open nodes
                     if adj.value in [node.value for node in open_nodes]:
                         continue
                     else:
@@ -83,6 +84,7 @@ class Prim:
             # make lowest edge weight as new open node
             open_nodes.append(lowest)
 
+    # get cost of MST -> int
     def get_cost(self, result):
         cost = 0
         for edge in result:

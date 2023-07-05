@@ -17,14 +17,17 @@ class Kruskal:
         self.result = self.search()
         self.cost = self.get_cost(self.result)
 
-    # get lowest edge weight -> tuple of node
-    def get_lowest_edge(self):
-        lowest = None
+    # sort edges by weight
+    def sort_edges(self):
+        edges = []
         for node in self.graph_nodes:
             for neighbor, weight in self.graph_nodes[node].items():
-                if lowest is None or weight < lowest[2]:
-                    lowest = (node, neighbor, weight)
-        return lowest[0], lowest[1]
+                if (neighbor, node, weight) not in edges:
+                    edges.append((node, neighbor, weight))
+        edges.sort(key=lambda x: x[2])
+        for i in range(len(edges)):
+            edges[i] = [edges[i][0], edges[i][1]]
+        return edges
 
     # update node attributes (parent)
     def update_node(self, adj, node):
@@ -33,33 +36,19 @@ class Kruskal:
 
     # search for MST -> list of MST edges
     def search(self):
+        
         # sort edges by weight
-        edges = []
-        for node in self.graph_nodes:
-            for neighbor, weight in self.graph_nodes[node].items():
-                if (neighbor, node, weight) not in edges:
-                    edges.append((node, neighbor, weight))
-        edges.sort(key=lambda x: x[2])
-
-        edges_objects = []
-
-        # convert nodes to node objects
-        for edge in edges:
-            parent = Node(edge[0])
-            node = Node(edge[1])
-            self.update_node(node, parent)
-            edges_objects.append((node, edge[0], edge[1]))
+        edges = self.sort_edges()
 
         result = []
 
-        # Union-Find data structure for cycle detection
+        # detect cycles
         sets = {}
         for node in self.graph_nodes:
             sets[node] = Node(node)
 
-        # iterate through edges
-        for edge in edges_objects:
-            node, node1, node2 = edge
+        for edge in edges:
+            node1, node2 = edge
 
             # find the sets to which the nodes belong
             set1 = self.find_set(sets, node1)
@@ -68,11 +57,11 @@ class Kruskal:
             # check if adding the edge creates a cycle
             if set1 != set2:
                 result.append([node1, node2])
-                self.union(sets, set1, set2)
+                self.merge(sets, set1, set2)
 
         return result
 
-    # find the set to which a node belongs (with path compression)
+    # find the set to which a node belongs
     def find_set(self, sets, node):
         if sets[node].parent is None:
             return node
@@ -80,9 +69,10 @@ class Kruskal:
         return sets[node].parent
 
     # merge two sets
-    def union(self, sets, set1, set2):
+    def merge(self, sets, set1, set2):
         sets[set2].parent = set1
 
+    # get cost of MST -> int
     def get_cost(self, result):
         cost = 0
         for edge in result:

@@ -5,7 +5,7 @@ from Cluster import*
 import time
 
 G = Graph()
-G.createGraph("test/ppt.txt")
+G.createGraph("test/tes.txt")
 G.printGraph()
 start = 1
 goal = 5
