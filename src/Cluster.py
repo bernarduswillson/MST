@@ -1,29 +1,35 @@
-def mst_based_clustering(mst_result, n):
-    clusters = []
+from Kruskal import*
+from Prim import*
 
-    for edge in mst_result:
-        node1, node2 = edge
-        node1_cluster = None
-        node2_cluster = None
+class Cluster:
+    def __init__(self, graph, n):
+        self.graph = graph
+        self.n = n
+        self.result = self.search()
+        self.clusters = self.clusters()
 
-        for cluster in clusters:
-            if node1 in cluster:
-                node1_cluster = cluster
-            if node2 in cluster:
-                node2_cluster = cluster
+    # remove largest weight edge
+    def search(self):
+        kruskal = Kruskal(self.graph)
+        result = kruskal.result
+        for i in range(self.n - 1):
+            result.pop()
+        return result
+    
+    # get clusters
+    def clusters(self):
+        clusters = []
+        for pair in self.result:
+            found_clusters = []
+            for i, cluster in enumerate(clusters):
+                if pair[0] in cluster or pair[1] in cluster:
+                    found_clusters.append(i)
+            if not found_clusters:
+                clusters.append(set(pair))
+            else:
+                new_cluster = set(pair)
+                for idx in sorted(found_clusters, reverse=True):
+                    new_cluster.update(clusters.pop(idx))
+                clusters.append(new_cluster)
+        return [list(cluster) for cluster in clusters]
 
-        if node1_cluster is None and node2_cluster is None:
-            clusters.append([node1, node2])
-        elif node1_cluster is None:
-            node2_cluster.append(node1)
-        elif node2_cluster is None:
-            node1_cluster.append(node2)
-        elif node1_cluster != node2_cluster:
-            node1_cluster.extend(node2_cluster)
-            clusters.remove(node2_cluster)
-
-        # Check if the desired number of clusters is reached
-        if len(clusters) == n:
-            break
-
-    return clusters
